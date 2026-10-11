@@ -1,0 +1,56 @@
+name: Искам да изнеса лекция
+description: Предложи тема за среща на клуба. Не ти трябва git.
+labels: [meeting]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Не е нужно да си експерт. Половината стойност на клуба е, че някой
+        е научил нещо преди две седмици и го разказва.
+
+  - type: input
+    id: topic
+    attributes:
+      label: Тема
+      placeholder: Какво всъщност прави `docker build`
+    validations:
+      required: true
+
+  - type: textarea
+    id: about
+    attributes:
+      label: За какво ще е
+      description: Два-три реда. Каква е основната мисъл, която хората да си отнесат.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: length
+    attributes:
+      label: Колко време ти трябва
+      options:
+        - до 20 минути
+        - около 40 минути
+        - цяла среща
+        - още не знам
+    validations:
+      required: true
+
+  - type: dropdown
+    id: help
+    attributes:
+      label: Искаш ли помощ с подготовката
+      options:
+        - "да"
+        - "не"
+        - "може би"
+    validations:
+      required: true
+
+  - type: input
+    id: who
+    attributes:
+      label: Кой си
+      description: Име и клас. Discord handle също помага.
+    validations:
+      required: false

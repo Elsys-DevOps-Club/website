@@ -1,0 +1,21 @@
+version: 2
+
+# Месечно и групирано съзнателно: при четири зависимости седмичните и
+# негрупирани PR-и биха били повече от комитите на репото за месец, а
+# игнорираните Dependabot PR-и изглеждат по-зле от липсващ Dependabot.
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      bun:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
