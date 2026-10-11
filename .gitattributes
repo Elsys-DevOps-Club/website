@@ -1,0 +1,11 @@
+* text=auto eol=lf
+
+*.woff2 binary
+*.png binary
+
+# Бранд китът е вендорнат дословно — не е код на сайта и не бива да
+# оцветява езиковата лента.
+public/brand/** linguist-vendored
+
+# Генериран и 70 KB: не носи смисъл в diff.
+bun.lock linguist-generated -diff
