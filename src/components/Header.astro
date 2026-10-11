@@ -127,13 +127,23 @@ const isCurrent = (href: string) =>
     /*
       Панелът е absolute в `.hd` (position: relative), значи процентната
       височина се решава спрямо хедъра — точно отместването на top: 100%.
-      Първият ред е резерва, където dvh липсва. Без това в landscape
-      последният ред (xdg-open) остава под долния край на екрана.
+      Без това в landscape последният ред (xdg-open) остава под долния
+      край на екрана.
     */
     max-height: calc(100vh - 100% - 8px);
-    max-height: calc(100dvh - 100% - 8px);
     overflow-y: auto;
     overscroll-behavior: contain;
+  }
+
+  /*
+    dvh следва свиването на адресната лента, vh не. Надграждането е в
+    @supports, а не втора max-height декларация: минификаторът събира
+    двете в един блок и изхвърля vh резервата.
+  */
+  @supports (height: 100dvh) {
+    .mp {
+      max-height: calc(100dvh - 100% - 8px);
+    }
   }
 
   .mp a {
