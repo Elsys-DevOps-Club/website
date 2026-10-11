@@ -1,6 +1,6 @@
 # devops-club-site
 
-Сайтът на DevOps клуба в ТУЕС: [devops.elsys.club](https://devops.elsys.club). Изискванията са в [`docs/requirements.md`](docs/requirements.md).
+Сайтът на DevOps клуба в ТУЕС: [devops.elsys.club](https://devops.elsys.club). Спецификацията е в [`docs/spec.md`](docs/spec.md).
 
 Astro без UI framework, Bun, Biome и ръчен CSS. Единственият JavaScript е малък скрипт на 404 страницата.
 

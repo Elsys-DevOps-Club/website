@@ -145,8 +145,12 @@ const { prompt, title, quote, cta, more, discordUrl } = Astro.props;
 
     /*
      * Надолу от върха на реда на заглавието до върха на главните:
-     * half-leading (lh - 1.32) / 2 плюс 1.02 - 0.734 = 0.286 (метриките на
-     * JetBrains Mono, виж DECISIONS.md).
+     * half-leading (lh - 1.32) / 2 плюс 1.02 - 0.734 = 0.286.
+     * Числата са метриките на JetBrains Mono, мерени в Chrome: ascent
+     * 1,02 em, descent 0,30 em (съдържанието е 1,32 em) и височина на
+     * главните 0,734 em. Формулата следва --h1-lh и --h1-size, затова
+     * промяна на размера или на line-height не я чупи; чупи я само смяна
+     * на шрифта, и тогава метриките се мерят наново.
      */
     .hero > :global(.term) {
       grid-column: 2;
