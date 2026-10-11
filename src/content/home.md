@@ -50,7 +50,7 @@ routes:
     title: Discord
     text: Тук вземаме решения за срещите и за клуба
 footer:
-  email: kiril.l.rangelov.2022@elsys-bg.org
+  email: devops-club@elsys-bg.org
   contact: Свържи се с нас
   discord: Discord
   links:

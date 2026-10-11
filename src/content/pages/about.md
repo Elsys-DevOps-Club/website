@@ -1,7 +1,7 @@
 ---
 kind: about
 title: За клуба
-description: Какво е DevOps, какво правим в клуба и как да изнесеш лекция.
+description: Какво е DevOps, какво правим в клуба и отговори на честите въпроси.
 prompt: ~/devops/about $
 tocLabel: На тази страница
 whatis:
