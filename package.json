@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "biome check .",
+    "typecheck": "astro check",
     "format": "biome check --write ."
   },
   "dependencies": {
@@ -15,6 +16,8 @@
     "astro": "^7.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15"
+    "@astrojs/check": "0.9.10",
+    "@biomejs/biome": "2.5.15",
+    "typescript": "6.0.3"
   }
 }
