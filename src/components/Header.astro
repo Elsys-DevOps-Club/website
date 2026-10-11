@@ -124,6 +124,16 @@ const isCurrent = (href: string) =>
     border-bottom: 1px solid var(--line);
     padding: 4px max(20px, env(safe-area-inset-right)) 20px
       max(20px, env(safe-area-inset-left));
+    /*
+      Панелът е absolute в `.hd` (position: relative), значи процентната
+      височина се решава спрямо хедъра — точно отместването на top: 100%.
+      Първият ред е резерва, където dvh липсва. Без това в landscape
+      последният ред (xdg-open) остава под долния край на екрана.
+    */
+    max-height: calc(100vh - 100% - 8px);
+    max-height: calc(100dvh - 100% - 8px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .mp a {
