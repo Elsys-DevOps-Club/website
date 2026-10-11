@@ -10,7 +10,9 @@ permissions:
 
 concurrency:
   group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  # Само preview-ята се прекъсват. Втори push към main не бива да спира
+  # качване към Cloudflare по средата.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   deploy:
