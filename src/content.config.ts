@@ -107,7 +107,14 @@ const pages = defineCollection({
     z.object({
       kind: z.literal("meetings"),
       ...pageHead,
-      lead: z.string(),
+      // Етикетът в [скоби] става линк към Discord в meetings.astro.
+      // Без схемата линкът изчезва безшумно при редакция на съдържанието.
+      lead: z
+        .string()
+        .regex(
+          /\[[^\]]+\]/,
+          "lead трябва да съдържа [етикет] за линка към Discord",
+        ),
       upcoming: z.string(),
       past: z.string(),
       plannedStatus: z.string(),

@@ -48,9 +48,9 @@ const entries = await Promise.all(
         imageCaption,
       } = meeting.data;
       const rows = [
-        { key: "time", label: fields.time, value: time },
-        { key: "room", label: fields.room, value: room },
-        { key: "speaker", label: fields.speaker, value: speaker },
+        { label: fields.time, value: time },
+        { label: fields.room, value: room },
+        { label: fields.speaker, value: speaker },
       ].filter((row) => row.value);
       return (
         <details class="m" id={meeting.id} open={i === 0}>

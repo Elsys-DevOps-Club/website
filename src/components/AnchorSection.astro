@@ -2,14 +2,13 @@
 interface Props {
   id: string;
   title: string;
-  wide?: boolean;
 }
 
-const { id, title, wide } = Astro.props;
+const { id, title } = Astro.props;
 ---
 
 <section class="s" id={id}>
-  <div class:list={["w", "g", { wide }]}>
+  <div class="w g">
     <div><a class="anc" href={`#${id}`}>#{id}</a><h2>{title}</h2></div>
     <slot />
   </div>
@@ -50,11 +49,6 @@ const { id, title, wide } = Astro.props;
       gap: 48px;
       padding-top: 80px;
       padding-bottom: 80px;
-    }
-
-    .g.wide {
-      grid-template-columns: 1fr;
-      gap: 24px;
     }
 
     h2 {

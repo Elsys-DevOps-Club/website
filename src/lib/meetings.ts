@@ -18,7 +18,7 @@ export async function getMeetings() {
 }
 
 /** Колко минали лекции показва блокът на `/`. */
-export const HOME_PAST_LIMIT = 2;
+const HOME_PAST_LIMIT = 2;
 
 /**
  * Извадката за `/`: най-близката `planned` и най-скорошните `past`.
