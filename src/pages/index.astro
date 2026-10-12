@@ -6,7 +6,8 @@ import Layout from "../layouts/Layout.astro";
 import { getHome } from "../lib/content";
 import { formatDate, getHomeMeetings, meetingHref } from "../lib/meetings";
 
-const { title, discordUrl, hero, events, routes, footer } = await getHome();
+const { title, discordUrl, hero, events, routes, footer, school } =
+  await getHome();
 
 const site = Astro.site;
 const source = footer.links.find((link) => link.key === "source");
@@ -19,8 +20,8 @@ const organization = {
   sameAs: source ? [source.href] : [],
   parentOrganization: {
     "@type": "EducationalOrganization",
-    name: 'Технологично училище "Електронни системи"',
-    url: "https://elsys-bg.org/",
+    name: school.name,
+    url: school.url,
   },
 };
 

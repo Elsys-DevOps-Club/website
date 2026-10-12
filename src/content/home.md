@@ -3,6 +3,11 @@ title: DevOps клуб ТУЕС
 siteName: TUES DevOps
 description: Как софтуерът стига от лаптопа до сървъра. Контейнери, автоматизация, инфраструктура.
 discordUrl: https://discord.gg/F4GwberfCp
+skipLink: Към съдържанието
+ogImageAlt: Лого на DevOps клуб ТУЕС
+school:
+  name: Технологично училище "Електронни системи"
+  url: https://elsys-bg.org/
 nav:
   label: Основна навигация
   menuLabel: Меню

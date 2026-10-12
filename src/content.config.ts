@@ -15,6 +15,10 @@ const home = defineCollection({
     siteName: z.string(),
     description: z.string(),
     discordUrl: z.url(),
+    skipLink: z.string(),
+    ogImageAlt: z.string(),
+    // Родителската организация в структурираните данни на `/`.
+    school: z.object({ name: z.string(), url: z.url() }),
     nav: z.object({
       label: z.string(),
       menuLabel: z.string(),
