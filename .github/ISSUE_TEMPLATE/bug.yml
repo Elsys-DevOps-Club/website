@@ -1,0 +1,28 @@
+name: 🐞 Проблем
+description: Технически проблем или лоша визуализация на сайта
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Опишете проблема
+      description: Какво видяхте и какво очаквахте да видите
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: Къде
+      description: Адресът на страницата, на която се случва
+      placeholder: https://devops.elsys.club/meetings
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Друго
+      description: Снимка на екрана помага много
+    validations:
+      required: false

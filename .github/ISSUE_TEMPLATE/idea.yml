@@ -1,0 +1,28 @@
+name: 💡 Предложение
+description: Липсваща информация или нещо, което може да е по-добре
+labels: [enhancement]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Опишете предложението
+      description: Какво предлагате и защо
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: Къде
+      description: Страницата или мястото в репото, ако се отнася за нещо конкретно
+      placeholder: https://devops.elsys.club/about
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Друго
+      description: Пример, снимка или линк към нещо подобно
+    validations:
+      required: false
