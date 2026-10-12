@@ -23,6 +23,26 @@ jobs:
       deployments: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Пълната история: стъпката по-долу сравнява с origin/main.
+          fetch-depth: 0
+
+      # Името на файла в src/content/meetings/ е публичната котва на срещата
+      # (meetingHref). Преименуване или изтриване чупи всеки споделен линк,
+      # а билдът остава зелен — затова проверката е тук. При push в main
+      # сравнението е със самия main, тоест празно; гледат се само PR-ите.
+      - name: Check meeting slugs are unchanged
+        if: github.event_name == 'pull_request'
+        run: |
+          renamed=$(git diff --diff-filter=RD --name-status origin/main...HEAD -- src/content/meetings/)
+          if [ -n "$renamed" ]; then
+            echo "Преименуван или изтрит файл на среща:"
+            echo "$renamed"
+            echo
+            echo "Името на файла е публична котва (/meetings#<име на файла>)."
+            echo "Смяната му чупи всеки споделен линк. Поправя се съдържанието, не името."
+            exit 1
+          fi
 
       - uses: oven-sh/setup-bun@v2
         with:

@@ -136,8 +136,31 @@ const pages = defineCollection({
   ]),
 });
 
+/** Малки латински букви, цифри и тирета между тях. Без точки и без тире в края. */
+const SLUG = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
+
+/**
+ * Името на файла е публична котва (`meetingHref` в `src/lib/meetings.ts`),
+ * затова се проверява като всяко друго поле. Проверката е тук, а не в схемата:
+ * Astro подава на Zod само frontmatter-а, но `generateId` вижда пътя и се
+ * изпълнява при същия sync, тоест грешката излиза от `bun run typecheck`.
+ */
+const meetingId = ({ entry }: { entry: string }) => {
+  const slug = entry.replace(/\.md$/, "");
+  if (!SLUG.test(slug)) {
+    throw new Error(
+      `src/content/meetings/${entry}: името на файла става публичен адрес, затова е тематичен slug — само малки латински букви, цифри и тирета между тях (без точки, без дата, без тире в началото или края). Например docker-basics.md.`,
+    );
+  }
+  return slug;
+};
+
 const meetings = defineCollection({
-  loader: glob({ base: "./src/content/meetings", pattern: "**/*.md" }),
+  loader: glob({
+    base: "./src/content/meetings",
+    pattern: "**/*.md",
+    generateId: meetingId,
+  }),
   schema: ({ image }) =>
     z.object({
       date: z.coerce.date(),
@@ -147,6 +170,9 @@ const meetings = defineCollection({
       room: z.string().optional(),
       status: z.enum(["past", "planned"]),
       materials: z.url().optional(),
+      // Съотношението на кадъра (16:9) се проверява в `src/lib/meetings.ts`,
+      // не тук: при glob loader `image()` е още път към файла, а размерите се
+      // знаят едва когато Astro обработи кадъра.
       image: image().optional(),
       imageCaption: z.string().optional(),
     }),
