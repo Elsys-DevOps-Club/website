@@ -9,3 +9,6 @@ public/brand/** linguist-vendored
 
 # Генериран и 70 KB: не носи смисъл в diff.
 bun.lock linguist-generated -diff
+
+# Бранд гайдбукът е вендорнат дословно.
+*.pdf binary

@@ -5,95 +5,49 @@
 Astro без UI framework, Bun, Biome и ръчен CSS. Сайтът не изпраща JavaScript —
 единственото изключение е малък inline скрипт на 404 страницата.
 
-Спецификацията е в [`docs/spec.md`](docs/spec.md), а как се добавя среща и как
-се прави PR — в [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Какво прави сайтът и какво съзнателно не прави е в
+[`docs/scope.md`](docs/scope.md); останалата референция е индексирана в
+[`docs/`](docs/README.md). Как се добавя среща и как се прави PR — в
+[`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## Локална разработка
 
-Нужен е [Bun](https://bun.sh); версията е в `.bun-version`.
-
-```bash
-bun install
-bun run dev        # http://localhost:4321
-bun run build      # статичен изход в dist/
-bun run preview    # преглед на dist/
-bun run check      # Biome: lint и формат
-bun run format     # Biome: поправя форматирането
-bun run typecheck  # astro check: типове и frontmatter срещу схемите
-```
+Нужен е [Bun](https://bun.sh); версията е в `.bun-version`. Командите са в
+[`package.json`](package.json), стъпките — в
+[`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## Страници
 
-- `/` — hero с бутон за Discord, таблица `kubectl get events` (генерирана от срещите), връзки към подстраниците.
-- `/meetings` — предстоящи срещи и архив с материалите.
-- `/about` — какво е DevOps, какво правим в клуба, въпроси.
-- `404` — страница за непознат адрес. Показва грешния сегмент в командата `kubectl get page` и в съобщението за грешка.
-
-Пътищата са на английски, текстовете са на български.
+Маршрутите са файловете в [`src/pages/`](src/pages/). Пътищата са на
+английски, текстовете са на български.
 
 ## Как се добавя среща
 
 Нов файл в `src/content/meetings/` и pull request. Не се пипа нищо друго.
 Името на файла е публична котва (`/meetings#<име на файла>`), затова е
-тематичен slug с малки латински букви — не дата. Подробностите, включително
-къде отива кадърът, са в [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-```yaml
----
-date: 2026-10-15
-time: 16:10–17:30        # по избор
-title: Заглавие на лекцията
-speaker: Име Фамилия
-room: "8.3.1"            # по избор
-status: planned          # planned | past
-materials: https://...   # по избор, за минали срещи
-image: ../../assets/meetings/docker-basics.jpg   # по избор, кадър 16:9
-imageCaption: Подпис към кадъра                  # по избор
----
-
-По избор: един до три абзаца обикновен текст. Показват се под блока
-`kubectl describe`. Всеки е до три реда на десктоп (T3).
-```
-
-- `planned` се показва в «Предстоящи», по дата нагоре. Ако няма нито една, се показва терминалният блок `kubectl get meetings --field-selector status=Pending`.
-- `past` се показва в «Досега», по дата надолу.
-- Най-близката `planned` и последните две `past` влизат в таблицата на `/`.
-- Без `materials` няма ред `Materials`. Без `image` няма кадър и място за него.
+тематичен slug с малки латински букви — не дата. Полетата, кадърът и
+проверките са в [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## Къде са текстовете
 
-- `src/content/home.md` — Discord поканата, навигацията, футърът (имейлът е една стойност: `footer.email`), текстовете на `/` и на 404.
-- `src/content/pages/about.md` — `/about`: какво е DevOps, какво правим в клуба, FAQ.
-- `src/content/pages/meetings.md` — заглавията и етикетите на `/meetings`.
-
-Нито един шаблон не държи видим текст. Схемите в `src/content.config.ts`
-валидират всеки файл, затова `bun run typecheck` хваща грешка във frontmatter.
+Всеки видим низ е в `src/content/**` и се валидира от схемите в
+`src/content.config.ts` — затова `bun run typecheck` хваща грешка във
+frontmatter. Нито един шаблон не държи видим текст.
 
 Терминалният блок на 404 е в шаблона (`src/pages/404.astro`), не в
 съдържанието: редовете му са свързани със скрипта.
 
-## JavaScript
-
-Сайтът не изпраща JavaScript, с едно изключение: inline скрипт в 404, който
-показва грешния адрес в терминалния блок. Без JS блокът остава с `page`.
-Всичко останало работи без JS, включително менюто (`details`) и акордеоните.
-
 ## Бранд и тема
 
-`public/brand/colors.css` е непроменен от бранд кита и се зарежда с `<link>`.
-Токените в `src/styles/global.css` само ги именуват по роля. Шрифтът
-(JetBrains Mono) в `public/fonts/` е със своя OFL лиценз.
-
-Тъмната тема е по подразбиране. Светлата се включва от
-`prefers-color-scheme: light`, без превключвател и без JavaScript. И двете
-групи токени са в началото на `src/styles/global.css`. Логата се сменят с
-`<picture>`, не с `filter`. Единственото изключение е размазването на
-страницата зад отвореното меню на тесен екран.
+`public/brand/colors.css` е непроменен от бранд кита и се зарежда с `<link>`;
+правилото стои в [`COPYRIGHT.txt`](public/brand/COPYRIGHT.txt) до него.
+Токените в `src/styles/global.css` само ги именуват по роля. Темата,
+контрастът и шрифтът са в [`docs/brand.md`](docs/brand.md).
 
 ## Деплой
 
-Push към `main` публикува в Cloudflare Pages, а всеки pull request получава
-preview. Виж [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+Cloudflare Pages, без ръчна стъпка между push и продукция. Виж
+[`docs/infrastructure.md`](docs/infrastructure.md).
 
 ## Лиценз
 
@@ -103,8 +57,8 @@ preview. Виж [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 | Какво | Лиценз |
 |---|---|
 | Кодът (шаблони, стилове, конфигурация) | MIT — [`LICENSE`](LICENSE) |
-| Текстовете (`src/content/**`, `docs/**`) | CC BY 4.0 — [`LICENSE-CONTENT`](LICENSE-CONTENT) |
-| Брандът (`public/brand/**`) | **изваден от двата**, всички права запазени — [`public/brand/COPYRIGHT.txt`](public/brand/COPYRIGHT.txt) |
+| Текстовете (`src/content/**`, `docs/**` без `docs/brand/**`) | CC BY 4.0 — [`LICENSE-CONTENT`](LICENSE-CONTENT) |
+| Брандът (`public/brand/**`, `docs/brand/**`) | **изваден от двата**, всички права запазени — [`public/brand/COPYRIGHT.txt`](public/brand/COPYRIGHT.txt) |
 | Шрифтът (`public/fonts/**`) | SIL OFL — [`OFL-JetBrainsMono.txt`](public/fonts/OFL-JetBrainsMono.txt) |
 
 CC BY работи само ако атрибуцията е указана. За текстовете тя е:

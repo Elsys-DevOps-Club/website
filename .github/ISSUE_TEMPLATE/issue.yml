@@ -1,0 +1,27 @@
+name: Нещо не работи или идея
+description: Счупено, грешно или предложение за сайта.
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Какво става
+      description: Какво видяхте и какво очаквахте да видите. Или какво предлагате и защо.
+    validations:
+      required: true
+
+  - type: input
+    id: where
+    attributes:
+      label: Къде
+      description: Адресът на страницата, ако става дума за нещо конкретно.
+      placeholder: https://devops.elsys.club/meetings
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Друго
+      description: Снимка на екрана помага много. Ако е въпрос на ширина, кажете я.
+    validations:
+      required: false

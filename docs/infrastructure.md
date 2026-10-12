@@ -6,7 +6,11 @@ Cloudflare Pages. Деплой при push в `main`, preview на всеки PR
 
 Pages проектът е Direct Upload, вързан за Cloudflare акаунта, а не за GitHub репото.
 
-DNS: в `elsys-club-dns` стои CNAME `devops` → `<project>.pages.dev`, `proxied: true`.
+DNS: в `elsys-club-dns` стои CNAME `devops` → `devops-club-site.pages.dev`, `proxied: true`.
+
+## Размер на страницата
+
+Препоръка, не лимит: HTML + CSS под ~50 KB gzipped, без шрифтовете. Запасът е седморен — най-голямата страница (`/meetings`) е 6,8 KB gzipped заедно с целия CSS, мерено с `gzip -9` — затова няма CI проверка. Числото е ориентир, който държи оформлението просто; ако някога се доближи, въпросът е какво е добавено, не как да се вмести.
 
 ## Материали
 

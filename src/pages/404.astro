@@ -30,7 +30,7 @@ const { notFound } = await getHome();
       <Button href="/" label={notFound.back} />
     </div>
   </div>
-  <!-- Единственият JS на сайта (N2): без него в блока остава "page". -->
+  <!-- Единственият JS на сайта: без него в блока остава "page". -->
   <script is:inline>
     // Адресът се декодира преди филтъра: иначе кирилицата се реже на
     // шестнайсетични остатъци. Невалидна %-последователност хвърля URIError.
@@ -38,7 +38,7 @@ const { notFound } = await getHome();
     try {
       path = decodeURIComponent(path);
     } catch (e) {}
-    // Показва се само последният сегмент, както казва спецификацията.
+    // Показва се само последният сегмент на адреса.
     // Филтърът е Unicode-aware: \w без флага u би махнал и кирилицата.
     var seg = path.split("/").filter(Boolean).pop() || "";
     var slug = seg.replace(/[^\p{L}\p{N}_-]/gu, "").slice(0, 40);
