@@ -14,7 +14,7 @@
 
 Изходният код на [сайта на DevOps клуба](https://devops.elsys.club).
 
-Написан е на статичен Astro без UI framework с ръчно писан CSS и **почти никакъв client-side JavaScript**. Всеки видим текст е Markdown в `src/content/**`, валидиран от Zod схема за лесна поддържка. 
+Написан е на статичен Astro без UI framework с ръчно писан CSS и **почти никакъв client-side JavaScript**. Всеки видим текст е Markdown в `src/content/**`, валидиран от Zod схема за лесна поддръжка.
 
 ## Локално пускане
 
