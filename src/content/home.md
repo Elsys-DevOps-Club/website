@@ -62,7 +62,7 @@ footer:
   links:
     - key: source
       label: Код на сайта
-      href: https://github.com/rangelovkiril/devops-club-site
+      href: https://github.com/Elsys-DevOps-Club/website
     - key: network
       label: Други клубове
       href: https://elsys.club
