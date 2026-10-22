@@ -14,7 +14,7 @@ const offsetFormat = new Intl.DateTimeFormat("en", {
  * Отместването се взима за самия ден, затова лятното часово време се спазва.
  * Сгрешено е само в часа на смяната (03:00–04:00 в неделя), а среща тогава няма.
  * С `Temporal` това е `PlainDateTime.from(local).toZonedDateTime(TIME_ZONE)`,
- * но Node, с който върви `astro build`, още го няма.
+ * но Node, с който върви `astro build`, още го няма (#4).
  */
 export function fromClubTime(local: string) {
   const offset = offsetFormat
