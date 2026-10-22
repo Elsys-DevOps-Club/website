@@ -18,8 +18,9 @@ const home = defineCollection({
     discordUrl: z.url(),
     skipLink: z.string(),
     ogImageAlt: z.string(),
-    // Родителската организация в структурираните данни на `/`.
-    school: z.object({ name: z.string(), url: z.url() }),
+    // Родителската организация в структурираните данни на `/`. `shortName` е
+    // за места, където пълното име е твърде дълго (мястото в `/meetings.json`).
+    school: z.object({ name: z.string(), shortName: z.string(), url: z.url() }),
     nav: z.object({
       label: z.string(),
       menuLabel: z.string(),
