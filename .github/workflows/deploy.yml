@@ -10,8 +10,6 @@ permissions:
 
 concurrency:
   group: deploy-${{ github.ref }}
-  # Само preview-ята се прекъсват. Втори push към main не бива да спира
-  # качване към Cloudflare по средата.
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
@@ -24,13 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          # Пълната история: стъпката по-долу сравнява с origin/main.
           fetch-depth: 0
 
-      # Името на файла в src/content/meetings/ е публичната котва на срещата
-      # (meetingHref). Преименуване или изтриване чупи всеки споделен линк,
-      # а билдът остава зелен — затова проверката е тук. При push в main
-      # сравнението е със самия main, тоест празно; гледат се само PR-ите.
       - name: Check meeting slugs are unchanged
         if: github.event_name == 'pull_request'
         run: |
@@ -53,7 +46,6 @@ jobs:
       - run: bun run typecheck
       - run: bun run build
 
-      # Fork PRs have no access to secrets, so they only build.
       - name: Resolve branch
         id: branch
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
@@ -70,9 +62,6 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy dist --project-name=devops-club-site --branch=${{ steps.branch.outputs.name }}
 
-  # Синхронизацията с Discord е отделен workflow със свой токен. Тук само се
-  # побутва, след като новата версия на сайта е качена. Отделен job, за да
-  # има само той право да пуска workflow-и.
   discord-events:
     needs: deploy
     if: github.event_name == 'push'
