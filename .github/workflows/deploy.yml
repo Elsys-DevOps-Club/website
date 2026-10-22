@@ -69,3 +69,18 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy dist --project-name=devops-club-site --branch=${{ steps.branch.outputs.name }}
+
+  # Синхронизацията с Discord е отделен workflow със свой токен. Тук само се
+  # побутва, след като новата версия на сайта е качена. Отделен job, за да
+  # има само той право да пуска workflow-и.
+  discord-events:
+    needs: deploy
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run discord-events.yml --repo "$GITHUB_REPOSITORY" --ref main

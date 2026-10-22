@@ -185,9 +185,10 @@ const meetings = defineCollection({
       .object({
         start: clubTime,
         end: clubTime,
-        title: z.string(),
+        // 100 знака е лимитът на Discord за име на събитие (`discord-events.yml`).
+        title: z.string().max(100, "title е до 100 знака"),
         speaker: z.string(),
-        // Без `room` срещата е онлайн, в Discord.
+        // Без `room` срещата е онлайн: в Discord е в stage канала на клуба.
         room: z.string().optional(),
         status: z.enum(["past", "planned"]),
         materials: z.url().optional(),
