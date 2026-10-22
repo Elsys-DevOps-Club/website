@@ -109,6 +109,15 @@ const comparable = (event) =>
     Date.parse(event.scheduled_end_time),
   ]);
 
+/** Discord иска корицата вътре в заявката, като data URI. */
+async function cover(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${url}: ${response.status}`);
+  const type = response.headers.get("content-type");
+  const data = Buffer.from(await response.arrayBuffer()).toString("base64");
+  return `data:${type};base64,${data}`;
+}
+
 /** При създаване празните полета се пропускат; при обновяване `null` ги чисти. */
 const withoutNulls = (event) =>
   Object.fromEntries(Object.entries(event).filter(([, v]) => v !== null));
@@ -129,13 +138,21 @@ for (const meeting of planned) {
   const wanted = toEvent(meeting);
   const event = current.find((e) => key(e) === meeting.url);
   if (!event) {
-    await discord("POST", EVENTS, withoutNulls(wanted));
+    const image = meeting.image && (await cover(meeting.image));
+    await discord("POST", EVENTS, withoutNulls({ ...wanted, image }));
     console.log(`Създадено: ${wanted.name}`);
-  } else if (
+    continue;
+  }
+  // Discord връща само хеш на корицата, затова смяна на картинката се вижда
+  // само ако се е появила или изчезнала. Нова картинка на мястото на стара
+  // се качва при следващата промяна по срещата.
+  const imageChanged = Boolean(meeting.image) !== Boolean(event.image);
+  if (
     event.status === SCHEDULED &&
-    comparable(event) !== comparable(wanted)
+    (imageChanged || comparable(event) !== comparable(wanted))
   ) {
-    await discord("PATCH", `${EVENTS}/${event.id}`, wanted);
+    const image = meeting.image ? await cover(meeting.image) : null;
+    await discord("PATCH", `${EVENTS}/${event.id}`, { ...wanted, image });
     console.log(`Обновено: ${wanted.name}`);
   }
 }

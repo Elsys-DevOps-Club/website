@@ -1,3 +1,4 @@
+import { getImage } from "astro:assets";
 import type { APIRoute } from "astro";
 import { getHome, getMeetingsPage } from "../lib/content";
 import { getMeetings, type Meeting, meetingHref } from "../lib/meetings";
@@ -19,8 +20,10 @@ export const GET: APIRoute = async ({ site }) => {
   const { roomLabel } = await getMeetingsPage();
   const { planned, past } = await getMeetings();
 
-  const toJson = (meeting: Meeting) => {
-    const { title, speaker, room, status, start, end } = meeting.data;
+  const toJson = async (meeting: Meeting) => {
+    const { title, speaker, room, status, start, end, image } = meeting.data;
+    // PNG, защото го приема всеки, който чете файла, включително Discord.
+    const cover = image && (await getImage({ src: image, format: "png" }));
     return {
       id: meeting.id,
       url: new URL(meetingHref(meeting), site).href,
@@ -32,8 +35,11 @@ export const GET: APIRoute = async ({ site }) => {
       // Без зала срещата е онлайн.
       location: room ? `${school.shortName}, ${roomLabel} ${room}` : null,
       description: reflow(meeting.body),
+      image: cover ? new URL(cover.src, site).href : null,
     };
   };
 
-  return Response.json({ meetings: [...planned, ...past].map(toJson) });
+  return Response.json({
+    meetings: await Promise.all([...planned, ...past].map(toJson)),
+  });
 };
