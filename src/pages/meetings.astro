@@ -6,7 +6,7 @@ import Terminal from "../components/Terminal.astro";
 import UpcomingCard from "../components/UpcomingCard.astro";
 import Layout from "../layouts/Layout.astro";
 import { getHome, getMeetingsPage } from "../lib/content";
-import { formatDate, getMeetings } from "../lib/meetings";
+import { formatDate, formatTime, getMeetings } from "../lib/meetings";
 
 const page = await getMeetingsPage();
 const { discordUrl } = await getHome();
@@ -16,8 +16,13 @@ const { planned, past } = await getMeetings();
 const [leadBefore, leadLink, leadAfter] = page.lead.split(/[[\]]/);
 
 const when = (meeting: (typeof planned)[number]) => {
-  const { date, time, room, speaker } = meeting.data;
-  return [formatDate(date), time, room && `${page.roomLabel} ${room}`, speaker]
+  const { start, room, speaker } = meeting.data;
+  return [
+    formatDate(start),
+    formatTime(meeting),
+    room ? `${page.roomLabel} ${room}` : page.onlineRoom,
+    speaker,
+  ]
     .filter(Boolean)
     .join(" · ");
 };
@@ -60,6 +65,7 @@ const when = (meeting: (typeof planned)[number]) => {
             columns={page.columns}
             describe={page.describeCommand}
             fields={page.fields}
+            onlineRoom={page.onlineRoom}
             materialsPrefix={page.materialsPrefix}
           />
         </>

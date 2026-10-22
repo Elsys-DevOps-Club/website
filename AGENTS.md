@@ -45,6 +45,11 @@ by hand.
   the footer logo width in `Footer.astro` and the hero terminal offset in
   `Hero.astro`. Do not copy those explanations into prose files; a copy drifts.
   Changing the font invalidates both and they must be measured again.
+- **`/meetings.json` describes meetings, nothing else.** It is generated from
+  the same collection as `/meetings` and carries only what that page already
+  shows. Nothing Discord-specific goes in: no guild or channel IDs, no event
+  shaping. That belongs to whoever reads it. It is public, so its fields are a
+  contract: renaming one breaks its readers.
 - **Commit style lives in [`.gitmessage`](.gitmessage).** Read it before
   committing. No commit bodies, no trailers.
 

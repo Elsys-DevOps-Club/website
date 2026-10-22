@@ -7,6 +7,7 @@ skipLink: Към съдържанието
 ogImageAlt: Лого на DevOps клуб ТУЕС
 school:
   name: Технологично училище "Електронни системи"
+  shortName: ТУЕС
   url: https://elsys-bg.org/
 nav:
   label: Основна навигация

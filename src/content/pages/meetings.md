@@ -11,6 +11,7 @@ upcomingCommand: kubectl get meetings --field-selector status=Pending
 upcomingEmpty: No resources found in devops namespace.
 discordCta: Следи в Discord
 roomLabel: зала
+onlineRoom: Discord
 listCommand: kubectl get meetings -n devops
 columns: [Date, Name]
 describeCommand: kubectl describe meeting

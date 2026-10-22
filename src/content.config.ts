@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { fromClubTime } from "./lib/time";
 
 const link = z.object({
   label: z.string(),
@@ -17,8 +18,9 @@ const home = defineCollection({
     discordUrl: z.url(),
     skipLink: z.string(),
     ogImageAlt: z.string(),
-    // Родителската организация в структурираните данни на `/`.
-    school: z.object({ name: z.string(), url: z.url() }),
+    // Родителската организация в структурираните данни на `/`. `shortName` е
+    // за места, където пълното име е твърде дълго (мястото в `/meetings.json`).
+    school: z.object({ name: z.string(), shortName: z.string(), url: z.url() }),
     nav: z.object({
       label: z.string(),
       menuLabel: z.string(),
@@ -126,6 +128,8 @@ const pages = defineCollection({
       upcomingEmpty: z.string(),
       discordCta: z.string(),
       roomLabel: z.string(),
+      // Показва се на мястото на залата, когато срещата няма `room`.
+      onlineRoom: z.string(),
       listCommand: z.string(),
       columns: z.array(z.string()).length(2),
       describeCommand: z.string(),
@@ -159,6 +163,17 @@ const meetingId = ({ entry }: { entry: string }) => {
   return slug;
 };
 
+/**
+ * По стенния часовник в София, без зона: `2026-11-05T16:10`. Зоната се
+ * добавя тук, затова нататък `start` и `end` са точни моменти (`Date`).
+ */
+const clubTime = z.iso
+  .datetime({
+    local: true,
+    error: "дата и час по софийско време, без зона: 2026-11-05T16:10",
+  })
+  .transform(fromClubTime);
+
 const meetings = defineCollection({
   loader: glob({
     base: "./src/content/meetings",
@@ -166,20 +181,29 @@ const meetings = defineCollection({
     generateId: meetingId,
   }),
   schema: ({ image }) =>
-    z.object({
-      date: z.coerce.date(),
-      time: z.string().optional(),
-      title: z.string(),
-      speaker: z.string(),
-      room: z.string().optional(),
-      status: z.enum(["past", "planned"]),
-      materials: z.url().optional(),
-      // Съотношението на кадъра (16:9) се проверява в `src/lib/meetings.ts`,
-      // не тук: при glob loader `image()` е още път към файла, а размерите се
-      // знаят едва когато Astro обработи кадъра.
-      image: image().optional(),
-      imageCaption: z.string().optional(),
-    }),
+    z
+      .object({
+        start: clubTime,
+        end: clubTime,
+        // 100 знака е лимитът на Discord за име на събитие (`discord-events.yml`).
+        title: z.string().max(100, "title е до 100 знака"),
+        speaker: z.string(),
+        // Без `room` срещата е онлайн: в Discord е в stage канала на клуба.
+        room: z.string().optional(),
+        status: z.enum(["past", "planned"]),
+        materials: z.url().optional(),
+        // Съотношението на кадъра (16:9) се проверява в `src/lib/meetings.ts`,
+        // не тук: при glob loader `image()` е още път към файла, а размерите се
+        // знаят едва когато Astro обработи кадъра.
+        image: image().optional(),
+        imageCaption: z.string().optional(),
+      })
+      .refine((meeting) => meeting.end > meeting.start, {
+        message: "end трябва да е след start",
+        path: ["end"],
+        // Само ако полетата са минали: иначе грешният start дава и тази грешка.
+        when: ({ issues }) => issues.length === 0,
+      }),
 });
 
 export const collections = { home, pages, meetings };

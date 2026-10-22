@@ -8,6 +8,18 @@ Pages проектът е Direct Upload, вързан за Cloudflare акаун
 
 DNS: в `elsys-club-dns` стои CNAME `devops` → `devops-club-site.pages.dev`, `proxied: true`.
 
+## Събития в Discord
+
+Всяка среща със `status: planned` е събитие в Discord сървъра на клуба. Прави го `.github/workflows/discord-events.yml`, който чете `/meetings.json` от продукцията. Пуска се след всеки деплой на `main` и веднъж на ден по cron; ръчно – от Actions → Discord events → Run workflow.
+
+Discord няма OIDC, затова токенът на бота е статичен. Пази го environment `discord` (Settings → Environments) с правило за деплой само от `main`. В него стоят:
+
+- secret `DISCORD_BOT_TOKEN` – токенът на бота;
+- variable `DISCORD_GUILD_ID` – ID на сървъра;
+- variable `DISCORD_STAGE_CHANNEL_ID` – ID на stage канала, където са онлайн срещите.
+
+На ниво сървър ботът има View Channels, Create Events и Manage Events. Manage Channel, Mute Members и Move Members има само в stage канала. При изтичане токенът се сменя с Reset Token в Developer Portal.
+
 ## Размер на страницата
 
 Препоръка, не лимит: HTML + CSS под ~50 KB gzipped, без шрифтовете. Запасът е седморен — най-голямата страница (`/meetings`) е 6,8 KB gzipped заедно с целия CSS, мерено с `gzip -9` — затова няма CI проверка. Числото е ориентир, който държи оформлението просто; ако някога се доближи, въпросът е какво е добавено, не как да се вмести.

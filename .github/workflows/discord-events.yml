@@ -1,0 +1,31 @@
+name: Discord events
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: discord-events
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: discord
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: .github/workflows/scripts
+
+      - name: Sync Discord events
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_GUILD_ID: ${{ vars.DISCORD_GUILD_ID }}
+          DISCORD_STAGE_CHANNEL_ID: ${{ vars.DISCORD_STAGE_CHANNEL_ID }}
+          SITE: https://devops.elsys.club
+        run: node .github/workflows/scripts/discord-events.mjs

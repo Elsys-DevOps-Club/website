@@ -1,7 +1,12 @@
 ---
 import { Image } from "astro:assets";
 import { render } from "astro:content";
-import { formatDate, type Meeting, materialsLabel } from "../lib/meetings";
+import {
+  formatDate,
+  formatTime,
+  type Meeting,
+  materialsLabel,
+} from "../lib/meetings";
 import Chevron from "./Chevron.astro";
 
 interface Props {
@@ -16,10 +21,18 @@ interface Props {
     materials: string;
   };
   materialsPrefix: string;
+  onlineRoom: string;
 }
 
-const { meetings, command, columns, describe, fields, materialsPrefix } =
-  Astro.props;
+const {
+  meetings,
+  command,
+  columns,
+  describe,
+  fields,
+  materialsPrefix,
+  onlineRoom,
+} = Astro.props;
 
 // Тялото на файла е по избор: без него няма нито обвивка, нито отстъп.
 const entries = await Promise.all(
@@ -38,8 +51,7 @@ const entries = await Promise.all(
   {
     entries.map(({ meeting, Content }, i) => {
       const {
-        date,
-        time,
+        start,
         title,
         speaker,
         room,
@@ -48,15 +60,15 @@ const entries = await Promise.all(
         imageCaption,
       } = meeting.data;
       const rows = [
-        { label: fields.time, value: time },
-        { label: fields.room, value: room },
+        { label: fields.time, value: formatTime(meeting) },
+        { label: fields.room, value: room ?? onlineRoom },
         { label: fields.speaker, value: speaker },
       ].filter((row) => row.value);
       return (
         <details class="m" id={meeting.id} open={i === 0}>
           <summary>
-            <time class="d" datetime={date.toISOString().slice(0, 10)}>
-              {formatDate(date)}
+            <time class="d" datetime={start.toISOString()}>
+              {formatDate(start)}
             </time>
             <h3 class="t">{title}</h3>
             <span class="x"><Chevron /></span>
