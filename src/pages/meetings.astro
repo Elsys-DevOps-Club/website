@@ -20,7 +20,7 @@ const when = (meeting: (typeof planned)[number]) => {
   return [
     formatDate(start),
     formatTime(meeting),
-    room && `${page.roomLabel} ${room}`,
+    room ? `${page.roomLabel} ${room}` : page.onlineRoom,
     speaker,
   ]
     .filter(Boolean)
@@ -65,6 +65,7 @@ const when = (meeting: (typeof planned)[number]) => {
             columns={page.columns}
             describe={page.describeCommand}
             fields={page.fields}
+            onlineRoom={page.onlineRoom}
             materialsPrefix={page.materialsPrefix}
           />
         </>

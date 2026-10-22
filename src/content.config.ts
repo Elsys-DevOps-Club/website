@@ -128,6 +128,8 @@ const pages = defineCollection({
       upcomingEmpty: z.string(),
       discordCta: z.string(),
       roomLabel: z.string(),
+      // Показва се на мястото на залата, когато срещата няма `room`.
+      onlineRoom: z.string(),
       listCommand: z.string(),
       columns: z.array(z.string()).length(2),
       describeCommand: z.string(),
@@ -185,6 +187,7 @@ const meetings = defineCollection({
         end: clubTime,
         title: z.string(),
         speaker: z.string(),
+        // Без `room` срещата е онлайн, в Discord.
         room: z.string().optional(),
         status: z.enum(["past", "planned"]),
         materials: z.url().optional(),

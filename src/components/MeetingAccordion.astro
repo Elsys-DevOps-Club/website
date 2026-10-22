@@ -21,10 +21,18 @@ interface Props {
     materials: string;
   };
   materialsPrefix: string;
+  onlineRoom: string;
 }
 
-const { meetings, command, columns, describe, fields, materialsPrefix } =
-  Astro.props;
+const {
+  meetings,
+  command,
+  columns,
+  describe,
+  fields,
+  materialsPrefix,
+  onlineRoom,
+} = Astro.props;
 
 // Тялото на файла е по избор: без него няма нито обвивка, нито отстъп.
 const entries = await Promise.all(
@@ -53,7 +61,7 @@ const entries = await Promise.all(
       } = meeting.data;
       const rows = [
         { label: fields.time, value: formatTime(meeting) },
-        { label: fields.room, value: room },
+        { label: fields.room, value: room ?? onlineRoom },
         { label: fields.speaker, value: speaker },
       ].filter((row) => row.value);
       return (
