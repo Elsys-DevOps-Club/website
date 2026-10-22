@@ -1,6 +1,6 @@
 ---
-date: 2026-05-27
-time: 16:10–17:30
+start: 2026-05-27T16:10
+end: 2026-05-27T17:30
 title: YAML и GitHub Actions
 speaker: Кирил Рангелов
 room: "8.3.2"

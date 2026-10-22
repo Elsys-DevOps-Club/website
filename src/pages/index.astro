@@ -29,14 +29,14 @@ const { next, past, hasMore } = await getHomeMeetings();
 const rows = [
   next
     ? {
-        when: formatDate(next.data.date),
+        when: formatDate(next.data.start),
         status: events.pending,
         text: next.data.title,
         href: meetingHref(next),
       }
     : { when: events.soon, status: events.pending, text: events.pendingText },
   ...past.map((meeting) => ({
-    when: formatDate(meeting.data.date),
+    when: formatDate(meeting.data.start),
     status: events.completed,
     text: meeting.data.title,
     href: meetingHref(meeting),

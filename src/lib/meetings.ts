@@ -1,9 +1,10 @@
 import { type CollectionEntry, getCollection } from "astro:content";
+import { TIME_ZONE } from "./time";
 
 export type Meeting = CollectionEntry<"meetings">;
 
 const byDate = (a: Meeting, b: Meeting) =>
-  a.data.date.getTime() - b.data.date.getTime();
+  a.data.start.getTime() - b.data.start.getTime();
 
 const RATIO = 16 / 9;
 /** Допускът поема закръгляването при предишно преоразмеряване: 1280×721 минава. */
@@ -55,11 +56,31 @@ export async function getHomeMeetings() {
   };
 }
 
-/** 27.05.2026, сглобено от ISO низ. Intl с bg-BG би добавил « г.». */
+const dayFormat = new Intl.DateTimeFormat("en", {
+  timeZone: TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** 27.05.2026 в София, сглобено от частите. Intl с bg-BG би добавил « г.». */
 export function formatDate(date: Date) {
-  const [year, month, day] = date.toISOString().slice(0, 10).split("-");
-  return `${day}.${month}.${year}`;
+  const parts = dayFormat.formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value;
+  return `${part("day")}.${part("month")}.${part("year")}`;
 }
+
+const clockFormat = new Intl.DateTimeFormat("en-GB", {
+  timeZone: TIME_ZONE,
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
+/** 16:10–17:30 в София. */
+export const formatTime = ({ data }: Meeting) =>
+  `${clockFormat.format(data.start)}–${clockFormat.format(data.end)}`;
 
 /** `[repo]/pilot-docker-deep-dive/`: последният сегмент на адреса на материалите. */
 export function materialsLabel(url: string, prefix: string) {
