@@ -28,4 +28,4 @@ jobs:
           DISCORD_GUILD_ID: ${{ vars.DISCORD_GUILD_ID }}
           DISCORD_STAGE_CHANNEL_ID: ${{ vars.DISCORD_STAGE_CHANNEL_ID }}
           SITE: https://devops.elsys.club
-        run: .github/workflows/scripts/discord-events.sh
+        run: node .github/workflows/scripts/discord-events.mjs
