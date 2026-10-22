@@ -45,6 +45,7 @@ const when = (meeting: (typeof planned)[number]) => {
               meta={when(meeting)}
               cta={page.discordCta}
               href={discordUrl}
+              image={meeting.data.image}
             />
           ))
         ) : (

@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import Button from "./Button.astro";
 
 interface Props {
@@ -8,12 +10,14 @@ interface Props {
   cta: string;
   href: string;
   id?: string;
+  image?: ImageMetadata;
 }
 
-const { status, title, meta, cta, href, id } = Astro.props;
+const { status, title, meta, cta, href, id, image } = Astro.props;
 ---
 
-<div class="up" id={id}>
+<div class:list={["up", { framed: image }]} id={id}>
+  {image && <Image src={image} alt="" width={800} height={450} />}
   <div>
     <span class="st">{status}</span>
     <h3>{title}</h3>
@@ -33,6 +37,15 @@ const { status, title, meta, cta, href, id } = Astro.props;
 
   .up > :global(.btn) {
     align-self: center;
+  }
+
+  .up > :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 8px;
   }
 
   .st {
@@ -68,6 +81,12 @@ const { status, title, meta, cta, href, id } = Astro.props;
     .up {
       grid-template-columns: minmax(0, 1fr) auto;
       padding: 32px 36px;
+    }
+
+    .up.framed {
+      grid-template-columns: minmax(0, 280px) minmax(0, 1fr) auto;
+      gap: 20px 32px;
+      align-items: center;
     }
 
     h3 {
