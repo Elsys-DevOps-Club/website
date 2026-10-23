@@ -24,12 +24,9 @@ const { status, title, meta, cta, href, id, image } = Astro.props;
     <h3>{title}</h3>
     {
       meta && (
-        <p>
-          {meta.map((part, i) => (
-            <>
-              {i > 0 && " · "}
-              <span class="part">{part}</span>
-            </>
+        <p class="meta">
+          {meta.map((part) => (
+            <span class="part">{part}</span>
           ))}
         </p>
       )
@@ -89,8 +86,28 @@ const { status, title, meta, cta, href, id, image } = Astro.props;
     margin-top: 8px;
   }
 
+  /*
+   * Разделителят е пред всяка част, а редът е изместен наляво с ширината му и
+   * там е изрязан. Така точката пред първата част на всеки ред не се вижда и
+   * при пренасяне не виси в края на предишния ред.
+   */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -3ch;
+    max-width: calc(52ch + 3ch);
+    clip-path: inset(0 0 0 3ch);
+  }
+
   .part {
     white-space: nowrap;
+  }
+
+  .part::before {
+    content: "·";
+    display: inline-block;
+    width: 3ch;
+    text-align: center;
   }
 
   @media (min-width: 900px) {
