@@ -22,9 +22,7 @@ const when = (meeting: (typeof planned)[number]) => {
     formatTime(meeting),
     room ? `${page.roomLabel} ${room}` : page.onlineRoom,
     speaker,
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  ];
 };
 ---
 

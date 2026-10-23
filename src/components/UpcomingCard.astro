@@ -6,7 +6,8 @@ import Button from "./Button.astro";
 interface Props {
   status: string;
   title: string;
-  meta?: string;
+  /** Части като „стая 17“ и „Кирил Рангелов“: ред се сменя само между тях. */
+  meta?: string[];
   cta: string;
   href: string;
   id?: string;
@@ -21,7 +22,18 @@ const { status, title, meta, cta, href, id, image } = Astro.props;
   <div>
     <span class="st">{status}</span>
     <h3>{title}</h3>
-    {meta && <p>{meta}</p>}
+    {
+      meta && (
+        <p>
+          {meta.map((part, i) => (
+            <>
+              {i > 0 && " · "}
+              <span class="part">{part}</span>
+            </>
+          ))}
+        </p>
+      )
+    }
   </div>
   <Button href={href} label={cta} />
 </div>
@@ -75,6 +87,10 @@ const { status, title, meta, cta, href, id, image } = Astro.props;
 
   p + p {
     margin-top: 8px;
+  }
+
+  .part {
+    white-space: nowrap;
   }
 
   @media (min-width: 900px) {
