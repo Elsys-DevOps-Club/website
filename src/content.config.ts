@@ -128,7 +128,7 @@ const pages = defineCollection({
       upcomingEmpty: z.string(),
       discordCta: z.string(),
       roomLabel: z.string(),
-      // Показва се на мястото на залата, когато срещата няма `room`.
+      // Показва се на мястото на стаята, когато срещата няма `room`.
       onlineRoom: z.string(),
       listCommand: z.string(),
       columns: z.array(z.string()).length(2),
