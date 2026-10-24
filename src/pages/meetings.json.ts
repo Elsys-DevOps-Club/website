@@ -32,7 +32,7 @@ export const GET: APIRoute = async ({ site }) => {
       speaker,
       start,
       end,
-      // Без зала срещата е онлайн.
+      // Без стая срещата е онлайн.
       location: room ? `${school.shortName}, ${roomLabel} ${room}` : null,
       description: reflow(meeting.body),
       image: cover ? new URL(cover.src, site).href : null,

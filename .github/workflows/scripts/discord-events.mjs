@@ -73,7 +73,7 @@ function describe({ speaker, description, url }) {
   return [speaker, text, url].filter(Boolean).join("\n\n");
 }
 
-/** Без зала срещата е онлайн, в stage канала на клуба. */
+/** Без стая срещата е онлайн, в stage канала на клуба. */
 function toEvent(meeting) {
   const event = {
     name: meeting.title,
