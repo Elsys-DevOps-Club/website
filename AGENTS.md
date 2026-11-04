@@ -38,7 +38,10 @@ by hand.
 - **No Tailwind, no UI framework.** Refused deliberately: at this size it adds
   configuration without benefit. Hand-written CSS with custom properties.
 - **Biome owns formatting.** Do not hand-format; run `bun run format`. Do not
-  add Prettier or ESLint.
+  add Prettier or ESLint. Markdown is the exception and stays off in
+  `biome.json`: Biome's Markdown formatter flattens the indentation of YAML
+  frontmatter, so nested fields such as `school.name` move to the top level
+  and the schema fails.
 - **Never an `assets` pattern in `.gitignore`.** The reason is the comment at
   [`.gitignore:14-15`](.gitignore#L14-L15), next to the rule it guards.
 - **Two measured constants are explained only in the comment next to them** —
