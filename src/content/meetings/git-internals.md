@@ -4,7 +4,7 @@ end: 2026-11-05T16:00
 title: Git отвътре
 speaker: Кирил Рангелов
 room: "17"
-status: planned
+status: postponed
 image: ../../assets/meetings/git-internals.png
 ---
 
