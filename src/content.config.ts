@@ -190,7 +190,10 @@ const meetings = defineCollection({
         speaker: z.string(),
         // Без `room` срещата е онлайн: в Discord е в stage канала на клуба.
         room: z.string().optional(),
-        status: z.enum(["past", "planned"]),
+        // `postponed` е среща без нова дата: не се показва никъде и не влиза в
+        // `/meetings.json`, но файлът остава, защото името му е публична котва.
+        // С нова дата се връща на `planned` и котвата отново води до нея.
+        status: z.enum(["past", "planned", "postponed"]),
         materials: z.url().optional(),
         // Съотношението на кадъра (16:9) се проверява в `src/lib/meetings.ts`,
         // не тук: при glob loader `image()` е още път към файла, а размерите се
